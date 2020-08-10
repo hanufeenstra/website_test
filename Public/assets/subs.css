@@ -1,0 +1,32 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: url(/assets/59174.jpg);
+    background-size: auto;
+    font-family: sans-serif;
+} 
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active  {
+  transition: background-color 10000s;
+  -webkit-text-fill-color: #fff !important;
+}
+.SubsPage [type="submit"]{
+    border: none;
+    left: 50px;
+    position: absolute;
+    background: rgb(28, 33, 36);
+    outline: none;
+    height: 50px;
+    width: 400px;
+    color: #fff;
+    font-size: 22px;
+    font-weight: bold;
+    border-radius: 25px;
+}
+.SubsPage [type="submit"]:hover{
+    cursor: pointer;
+    background: rgba(117, 117, 117, 0.349);    
+}

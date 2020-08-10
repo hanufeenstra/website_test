@@ -1,0 +1,52 @@
+<script>
+    $(function () {    
+        $('#btn_save_invoice').click(function () {
+            var items = [];
+            var item_order = 1;
+            $('table tbody.item').each(function () {
+                var row = {};
+                $(this).find('input,select,textarea').each(function () {
+                    if ($(this).is(':checkbox')) {
+                        row[$(this).attr('name')] = $(this).is(':checked');
+                    } else {
+                        row[$(this).attr('name')] = $(this).val();
+                    }
+                });
+                row['item_order'] = item_order;
+                item_order++;
+                items.push(row);
+            });
+            $.post("http://intellitechdistributors.co.za/invoicing/index.php/invoices/ajax/save", {
+                    invoice_id: 38,
+                    invoice_number: $('#invoice_number').val(),
+                    invoice_date_created: $('#invoice_date_created').val(),
+                    invoice_date_due: $('#invoice_date_due').val(),
+                    invoice_status_id: $('#invoice_status_id').val(),
+                    invoice_password: $('#invoice_password').val(),
+                    items: JSON.stringify(items),
+                    invoice_discount_amount: $('#invoice_discount_amount').val(),
+                    invoice_discount_percent: $('#invoice_discount_percent').val(),
+                    invoice_terms: $('#invoice_terms').val(),
+                    custom: $('input[name^=custom],select[name^=custom]').serializeArray(),
+                    payment_method: $('#payment_method').val(),
+                },
+                function (data) {
+                    var response = JSON.parse(data);
+                    if (response.success === 1) {
+                        window.location = "http://intellitechdistributors.co.za/invoicing/index.php/invoices/view/" + 38;
+                    } else {
+                        $('#fullpage-loader').hide();
+                        $('.control-group').removeClass('has-error');
+                        $('div.alert[class*="alert-"]').remove();
+                        var resp_errors = response.validation_errors,
+                            all_resp_errors = '';
+                        for (var key in resp_errors) {
+                            $('#' + key).parent().addClass('has-error');
+                            all_resp_errors += resp_errors[key];
+                        }
+                        $('#invoice_form').prepend('<div class="alert alert-danger">' + all_resp_errors + '</div>');
+                    }
+                });
+        });    
+    });
+</script>
